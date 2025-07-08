@@ -1,10 +1,17 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, Image, ScrollView } from "react-native";
-import { Link } from "expo-router";
-import { useTheme } from "./context/ThemeContext"; // ดึง theme context
+import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity } from "react-native";
+import { useTheme } from "./context/ThemeContext";
+import { useRouter } from "expo-router";
 
 export default function HomeScreen() {
-  const { color } = useTheme(); // ✅ ใช้สีจาก context
+  const { color, isDarkMode } = useTheme();
+  const router = useRouter();
+
+  const buttonColor = isDarkMode ? "#777777" : "#6200ee";
+
+  const handlePress = () => {
+    router.push("/about");
+  };
 
   return (
     <ScrollView style={{ backgroundColor: color.background }} contentContainerStyle={styles.wrapper}>
@@ -22,7 +29,11 @@ export default function HomeScreen() {
         <Text style={[styles.infoText, { color: color.text }]}>รหัส: 653450299-0</Text>
         <Text style={[styles.infoText, { color: color.text }]}>วิทยาการคอมพิวเตอร์และสารสนเทศ</Text>
         <Text style={[styles.infoText, { color: color.text }]}>มหาวิทยาลัยขอนแก่น</Text>
-        <Link href="/about" style={[styles.link, { color: color.primary }]}>About me</Link>
+        <TouchableOpacity
+          style={[styles.btn, { backgroundColor: buttonColor }]}
+          onPress={handlePress}>
+          <Text style={styles.btnText}>About me</Text>
+        </TouchableOpacity>
       </View>
 
       <Sidetopic />
@@ -78,7 +89,6 @@ const styles = StyleSheet.create({
   topic: {
     fontSize: 26,
     fontWeight: "bold",
-    color: "#3D405B",
     marginBottom: 30,
     letterSpacing: 1,
   },
@@ -90,7 +100,6 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   blockText: {
-    color: "#ffffff",
     fontSize: 16,
     fontWeight: "600",
   },
@@ -113,13 +122,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     lineHeight: 22,
   },
-  link: {
-    fontSize: 16,
-    fontWeight: "600",
-    marginTop: 12,
-  },
   btn: {
-    backgroundColor: "#3D405B",
     paddingVertical: 12,
     paddingHorizontal: 24,
     borderRadius: 8,
@@ -129,5 +132,6 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     fontSize: 16,
     fontWeight: "600",
+    textAlign: "center",
   },
 });
