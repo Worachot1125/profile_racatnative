@@ -1,7 +1,16 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
 import { useTheme } from "./context/ThemeContext";
 import { useRouter } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Alert } from "react-native";
 
 export default function HomeScreen() {
   const { color, isDarkMode } = useTheme();
@@ -9,12 +18,34 @@ export default function HomeScreen() {
 
   const buttonColor = isDarkMode ? "#777777" : "#6200ee";
 
-  const handlePress = () => {
+  const handleAbout = () => {
     router.push("/about");
+  };
+  const handleBook = () => {
+    router.push("/book");
+  };
+  const handleSignup = () => {
+    router.push("/signup");
+  };
+  const handleSignin = () => {
+    router.push("/signin");
+  };
+  const handleLogout = async () => {
+    try {
+      await AsyncStorage.removeItem("token");
+      Alert.alert("👋", "ออกจากระบบเรียบร้อยแล้ว");
+      router.replace("/signin"); // ✅ กลับไปหน้า signin
+    } catch (error) {
+      console.error("Logout error:", error);
+      Alert.alert("❌", "เกิดข้อผิดพลาดในการออกจากระบบ");
+    }
   };
 
   return (
-    <ScrollView style={{ backgroundColor: color.background }} contentContainerStyle={styles.wrapper}>
+    <ScrollView
+      style={{ backgroundColor: color.background }}
+      contentContainerStyle={styles.wrapper}
+    >
       <StatusBar style="auto" />
 
       <Image
@@ -25,14 +56,47 @@ export default function HomeScreen() {
       <Text style={[styles.topic, { color: color.text }]}>My Profile</Text>
 
       <View style={[styles.infoContainer, { backgroundColor: color.surface }]}>
-        <Text style={[styles.infoText, { color: color.text }]}>ชื่อ: วรโชติ ทองเลิศ</Text>
-        <Text style={[styles.infoText, { color: color.text }]}>รหัส: 653450299-0</Text>
-        <Text style={[styles.infoText, { color: color.text }]}>วิทยาการคอมพิวเตอร์และสารสนเทศ</Text>
-        <Text style={[styles.infoText, { color: color.text }]}>มหาวิทยาลัยขอนแก่น</Text>
+        <Text style={[styles.infoText, { color: color.text }]}>
+          ชื่อ: วรโชติ ทองเลิศ
+        </Text>
+        <Text style={[styles.infoText, { color: color.text }]}>
+          รหัส: 653450299-0
+        </Text>
+        <Text style={[styles.infoText, { color: color.text }]}>
+          วิทยาการคอมพิวเตอร์และสารสนเทศ
+        </Text>
+        <Text style={[styles.infoText, { color: color.text }]}>
+          มหาวิทยาลัยขอนแก่น
+        </Text>
         <TouchableOpacity
           style={[styles.btn, { backgroundColor: buttonColor }]}
-          onPress={handlePress}>
+          onPress={handleAbout}
+        >
           <Text style={styles.btnText}>About me</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.btn, { backgroundColor: buttonColor }]}
+          onPress={handleBook}
+        >
+          <Text style={styles.btnText}>Book</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.btn, { backgroundColor: buttonColor }]}
+          onPress={handleSignup}
+        >
+          <Text style={styles.btnText}>Signup</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.btn, { backgroundColor: buttonColor }]}
+          onPress={handleSignin}
+        >
+          <Text style={styles.btnText}>Signin</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.btn, { backgroundColor: buttonColor }]}
+          onPress={handleLogout}
+        >
+          <Text style={styles.btnText}>Logout</Text>
         </TouchableOpacity>
       </View>
 

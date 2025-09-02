@@ -1,7 +1,9 @@
 import { Stack } from "expo-router";
 import ThemeToggle from "./components/ThemeToggle";
+import SignInButton from "./components/btnSignin";
 import { ThemeProvider, useTheme } from "./context/ThemeContext";
 import { View } from "react-native";
+
 
 function StackLayout() {
   const { color, isDarkMode } = useTheme();
@@ -33,6 +35,39 @@ function StackLayout() {
         name="about"
         options={{
           title: "About us",
+          headerRight: () => (
+            <View style={{ paddingRight: 12 }}>
+              <ThemeToggle key={isDarkMode ? "dark" : "light"} />
+            </View>
+          ),
+        }}
+      />
+      <Stack.Screen
+        name="book"
+        options={{
+          title: "Book",
+          headerRight: () => (
+            <View style={{ paddingRight: 12 }}>
+              <ThemeToggle key={isDarkMode ? "dark" : "light"} />
+            </View>
+          ),
+        }}
+      />
+      <Stack.Screen
+        name="signup"
+        options={{
+          title: "Sign Up",
+          headerRight: () => (
+            <View style={{ paddingRight: 12 }}>
+              <ThemeToggle key={isDarkMode ? "dark" : "light"} />
+            </View>
+          ),
+        }}
+      />
+      <Stack.Screen
+        name="signin"
+        options={{
+          title: "Sign in",
           headerRight: () => (
             <View style={{ paddingRight: 12 }}>
               <ThemeToggle key={isDarkMode ? "dark" : "light"} />
